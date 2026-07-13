@@ -10,6 +10,7 @@ filelock==3.20.1
 numpy==2.4.0
 packaging==24.2
 pefile==2023.2.7
+pillow==12.3.0
 platformdirs==4.5.1
 pygame==2.6.1
 pyinstaller==6.12.0
