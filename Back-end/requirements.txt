@@ -6,6 +6,7 @@ distlib==0.4.0
 Django==6.0.7
 django-cors-headers==4.9.0
 djangorestframework==3.17.1
+djangorestframework_simplejwt==5.5.1
 filelock==3.20.1
 numpy==2.4.0
 packaging==24.2
@@ -15,6 +16,7 @@ platformdirs==4.5.1
 pygame==2.6.1
 pyinstaller==6.12.0
 pyinstaller-hooks-contrib==2025.1
+PyJWT==2.13.0
 pyserial==3.5
 pywin32-ctypes==0.2.3
 setuptools==77.0.3

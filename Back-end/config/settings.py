@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
      'rest_framework',
     'corsheaders',
+    'rest_framework_simplejwt',
     'App'
 ]
 
@@ -126,5 +127,22 @@ MEDIA_URL='/media/'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+
+    
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+from datetime import timedelta
+SIMPLE_JWT={
+    'ACCESS_TOKEN_LIFETIME':timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME':timedelta(hours=2),
+    'ROTATE_REFRESH_TOKENS':False,
+    'BALCKLIST_AFTER_ROTATION':False,
+    'AUTH_HEADER_TYPES':('Bearer',),
+}
 
