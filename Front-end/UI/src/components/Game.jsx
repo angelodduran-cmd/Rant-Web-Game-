@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Phaser from "phaser";
+import EscenaInicio from "./game/EscenaInicio";
 import EscenaJuego from "./game/EscenaJuego";
 
 const Game = ({ onGameOver }) => {
@@ -25,7 +26,8 @@ const Game = ({ onGameOver }) => {
         canvasStyle:
           "position: relative; width: 100%; height: 100%; display: block;",
       },
-      scene: [EscenaJuego],
+
+      scene: [EscenaInicio, EscenaJuego],
     };
 
     const juegoInstancia = new Phaser.Game(config);
