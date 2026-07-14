@@ -14,6 +14,12 @@ export default class EscenaJuego extends Phaser.Scene {
         this.matrizTablero = Array.from({ length: this.FILAS }, () => Array(this.COLUMNAS).fill(0));
         this.listaGatos = [];
         this.estaPausado = false;
+        
+       
+        this.puntuacionActual = 0;
+        this.velocidadCicloGatos = 800; 
+        this.totalCasillasAPintar = this.FILAS * this.COLUMNAS;
+        this.casillasPintadasContador = 0;
     }
 
     preload() {
@@ -42,25 +48,49 @@ export default class EscenaJuego extends Phaser.Scene {
         this.teclado = this.input.keyboard.createCursorKeys();
 
         this.pintarCasilla = (r, c) => {
-            this.matrizTablero[r][c] = 1;
-            this.grupoCuadrícula.children.iterate(rect => {
-                const coords = rect.getData('coordenadas');
-                if (coords.r === r && coords.c === c) {
-                    rect.setFillStyle(0x00aaff); 
+          
+            if (this.matrizTablero[r][c] === 0) {
+                this.matrizTablero[r][c] = 1;
+                this.casillasPintadasContador++;
+                this.puntuacionActual += 10; 
+                
+                this.grupoCuadrícula.children.iterate(rect => {
+                    const coords = rect.getData('coordenadas');
+                    if (coords.r === r && coords.c === c) {
+                        rect.setFillStyle(0x00aaff); 
+                    }
+                });
+
+                
+                if (this.casillasPintadasContador === this.totalCasillasAPintar) {
+                    this.reiniciarTableroInfinito();
                 }
-            });
+            }
         };
 
         this.pintarCasilla(0, 0);
 
-        
+       
         const gatoBase = new Gato(this, this.FILAS - 1, this.COLUMNAS - 1, null, this.TAMANO, false);
         gatoBase.setOrigin(0.5);
         this.listaGatos.push(gatoBase);
 
+        this.actualizarTemporizadorGatos();
+
+      
+        this.time.addEvent({
+            delay: 30000,
+            callback: this.aparecerGatoTemporal,
+            callbackScope: this,
+            loop: true
+        });
+    }
+
+    actualizarTemporizadorGatos() {
+        if (this.temporizadorGatos) this.temporizadorGatos.destroy();
         
         this.temporizadorGatos = this.time.addEvent({
-            delay: 800,
+            delay: this.velocidadCicloGatos,
             callback: () => {
                 if (!this.estaPausado) {
                     this.listaGatos.forEach(gato => {
@@ -71,6 +101,57 @@ export default class EscenaJuego extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
+    }
+
+   
+    aparecerGatoTemporal() {
+        if (this.estaPausado) return;
+
+       
+        const esquinas = [
+            { r: 0, c: this.COLUMNAS - 1 },
+            { r: this.FILAS - 1, c: 0 },
+            { r: this.FILAS - 1, c: this.COLUMNAS - 1 }
+        ];
+        const esquinaElegida = esquinas[Phaser.Math.Between(0, esquinas.length - 1)];
+
+        const gatoTemporal = new Gato(this, esquinaElegida.r, esquinaElegida.c, null, this.TAMANO, true);
+        gatoTemporal.estaDespierto = true;
+        gatoTemporal.setOrigin(0.5);
+        
+        this.listaGatos.push(gatoTemporal);
+
+       
+        this.cameras.main.flash(300, 239, 68, 68); 
+
+        
+        this.time.delayedCall(12000, () => {
+            this.listaGatos = this.listaGatos.filter(g => g !== gatoTemporal);
+            gatoTemporal.destroy(); // Lo elimina limpiamente de Phaser
+        });
+    }
+
+    
+    reiniciarTableroInfinito() {
+        
+        if (this.velocidadCicloGatos > 300) {
+            this.velocidadCicloGatos -= 70; 
+            this.actualizarTemporizadorGatos();
+        }
+
+        
+        this.matrizTablero = Array.from({ length: this.FILAS }, () => Array(this.COLUMNAS).fill(0));
+        this.casillasPintadasContador = 0;
+
+        this.grupoCuadrícula.children.iterate(rect => {
+            rect.setFillStyle(0x4a4a4a);
+        });
+
+       
+        this.pintarCasilla(this.raton.fila, this.raton.columna);
+
+        
+        this.cameras.main.flash(500, 252, 211, 77);
     }
 
     update() {
@@ -84,7 +165,6 @@ export default class EscenaJuego extends Phaser.Scene {
             this.raton.moverA(this.raton.fila, this.raton.columna + 1, this.FILAS, this.COLUMNAS);
         }
 
-       
         this.listaGatos.forEach(gato => {
             if (this.raton.fila === gato.fila && this.raton.columna === gato.columna) {
                 console.log("¡El gato atrapó al ratón!");
