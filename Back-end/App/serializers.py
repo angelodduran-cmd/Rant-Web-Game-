@@ -56,7 +56,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class ScoreSerializer(serializers.ModelSerializer):
      user=serializers.SlugRelatedField(
         slug_field='username', 
-        queryset=User.objects.all())
+        read_only=True)
 
      class Meta:
         model=Scores

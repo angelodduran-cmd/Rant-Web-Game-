@@ -12,6 +12,8 @@ class ScoreViewSet(viewsets.ModelViewSet):
     serializer_class = ScoreSerializer
     def get_queryset(self):
         return Scores.objects.all().order_by('-score')[:10]
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
     
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class=CustomTokenObtainPairSerializer

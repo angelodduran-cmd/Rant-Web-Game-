@@ -1,35 +1,45 @@
 import React, { useEffect, useState } from "react";
 import Logo from "/Logo.png";
 import Game from "../components/Game";
-import { GetScore } from "../components/API";
+import { GetScore, SaveScore } from "../components/API";
 import Qbert from "/Qbert.png";
 import { url } from "../components/API";
 import Contact from "../components/Contact";
 import { AnimatePresence } from "motion/react";
 import Modal from "../components/Modal";
+
 const Home = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [user, setUser] = useState("Player");
   const [foto, setFoto] = useState("");
   const [contacto, setContacto] = useState(false);
 
+  const loadGameData = async () => {
+    try {
+      const { data } = await GetScore();
+      setLeaderboard(data);
+    } catch (error) {
+      console.error("Error al conectar con la API de puntuaciones:", error);
+    }
+  };
+
   useEffect(() => {
-    const loadGameData = async () => {
-      try {
-        const { data } = await GetScore();
-        setLeaderboard(data);
-      } catch (error) {
-        console.error("Error al conectar con la API de puntuaciones:", error);
-      }
-    };
     const usuario = localStorage.getItem("username");
     if (usuario) setUser(usuario);
     const photo = localStorage.getItem("image");
     if (photo) setFoto(`${url}${photo}`);
-    console.log(`${url}${photo}`);
 
     loadGameData();
   }, []);
+
+  const handleGameOver = async (puntuacionFinal) => {
+    try {
+      await SaveScore({ score: puntuacionFinal });
+      loadGameData();
+    } catch (error) {
+      console.error("Error al registrar el récord en el servidor:", error);
+    }
+  };
 
   return (
     <>
@@ -86,7 +96,7 @@ const Home = () => {
           className="max-w-6xl mx-auto px-4 py-10 flex flex-col gap-12 items-center"
         >
           <section className="w-full flex justify-center drop-shadow-[0_10px_15px_rgba(0,0,0,0.7)]">
-            <Game />
+            <Game onGameOver={handleGameOver} />
           </section>
 
           <section
@@ -109,7 +119,7 @@ const Home = () => {
                     >
                       <div className="flex items-center gap-3">
                         <span
-                          className={`w-6 text-center font-black ${index === 0 ? "text-amber-400 text-lg" : index === 1 ? "text-stone-300" : index === 2 ? "text-amber-600" : "text-amber-100/40"}`}
+                          className={`w-6 text-center font-black ${index === 0 ? "text-amber-400 text-lg" : index === 1 ? "text-slate-300" : index === 2 ? "text-amber-600" : "text-amber-100/40"}`}
                         >
                           {index + 1}
                         </span>
@@ -151,8 +161,8 @@ const Home = () => {
                     los videojuegos más icónicos y memorables de la era dorada
                     del arcade. Diseñado por Warren Davis y Jeff Lee, el juego
                     revolucionó las salas de juego gracias a su innovadora
-                    perspectiva isométrica en tres dimensiones y a un
-                    carismático protagonista que cautivó al público.
+                    perspectiva isométrica en tres dimensions y a un carismático
+                    protagonista que cautivó al público.
                   </p>
                 </div>
                 <p>
@@ -175,6 +185,7 @@ const Home = () => {
           </section>
         </main>
       </div>
+
       <AnimatePresence>
         {contacto && (
           <Modal isOpen={contacto} onClose={() => setContacto(false)}>
