@@ -8,11 +8,15 @@ import Contact from "../components/Contact";
 import { AnimatePresence } from "motion/react";
 import Modal from "../components/Modal";
 
+import { useNavigate } from "react-router-dom";
+
 const Home = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [user, setUser] = useState("Player");
   const [foto, setFoto] = useState("");
   const [contacto, setContacto] = useState(false);
+
+  const navi = useNavigate();
 
   const loadGameData = async () => {
     try {
@@ -20,17 +24,32 @@ const Home = () => {
       setLeaderboard(data);
     } catch (error) {
       console.error("Error al conectar con la API de puntuaciones:", error);
+
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 403)
+      ) {
+        localStorage.clear();
+        navi("/Login");
+      }
     }
   };
 
   useEffect(() => {
     const usuario = localStorage.getItem("username");
-    if (usuario) setUser(usuario);
+    const token = localStorage.getItem("token-access");
+
+    if (!usuario || !token) {
+      navi("/Login");
+      return;
+    }
+
+    setUser(usuario);
     const photo = localStorage.getItem("image");
     if (photo) setFoto(`${url}${photo}`);
 
     loadGameData();
-  }, []);
+  }, [navi]);
 
   const handleGameOver = async (puntuacionFinal) => {
     try {
@@ -38,6 +57,10 @@ const Home = () => {
       loadGameData();
     } catch (error) {
       console.error("Error al registrar el récord en el servidor:", error);
+      if (error.response && error.response.status === 401) {
+        localStorage.clear();
+        navigate("/Login");
+      }
     }
   };
 
@@ -161,8 +184,8 @@ const Home = () => {
                     los videojuegos más icónicos y memorables de la era dorada
                     del arcade. Diseñado por Warren Davis y Jeff Lee, el juego
                     revolucionó las salas de juego gracias a su innovadora
-                    perspectiva isométrica en tres dimensions y a un carismático
-                    protagonista que cautivó al público.
+                    perspectiva isométrica en tres dimensiones y a un
+                    carismático protagonista que cautivó al público.
                   </p>
                 </div>
                 <p>
