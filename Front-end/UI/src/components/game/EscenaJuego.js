@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import Raton from "./Raton";
+import Gato from "./Gato";
 
 export default class EscenaJuego extends Phaser.Scene {
     constructor() {
@@ -11,6 +12,8 @@ export default class EscenaJuego extends Phaser.Scene {
         this.COLUMNAS = 6;
         this.TAMANO = 70;
         this.matrizTablero = Array.from({ length: this.FILAS }, () => Array(this.COLUMNAS).fill(0));
+        this.listaGatos = [];
+        this.estaPausado = false;
     }
 
     preload() {
@@ -49,6 +52,25 @@ export default class EscenaJuego extends Phaser.Scene {
         };
 
         this.pintarCasilla(0, 0);
+
+        
+        const gatoBase = new Gato(this, this.FILAS - 1, this.COLUMNAS - 1, null, this.TAMANO, false);
+        gatoBase.setOrigin(0.5);
+        this.listaGatos.push(gatoBase);
+
+        
+        this.temporizadorGatos = this.time.addEvent({
+            delay: 800,
+            callback: () => {
+                if (!this.estaPausado) {
+                    this.listaGatos.forEach(gato => {
+                        gato.actualizarLogica(this.FILAS, this.COLUMNAS, this.raton.fila, this.raton.columna);
+                    });
+                }
+            },
+            callbackScope: this,
+            loop: true
+        });
     }
 
     update() {
@@ -61,5 +83,12 @@ export default class EscenaJuego extends Phaser.Scene {
         } else if (Phaser.Input.Keyboard.JustDown(this.teclado.right)) {
             this.raton.moverA(this.raton.fila, this.raton.columna + 1, this.FILAS, this.COLUMNAS);
         }
+
+       
+        this.listaGatos.forEach(gato => {
+            if (this.raton.fila === gato.fila && this.raton.columna === gato.columna) {
+                console.log("¡El gato atrapó al ratón!");
+            }
+        });
     }
 }
