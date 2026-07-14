@@ -23,9 +23,23 @@ export default class EscenaJuego extends Phaser.Scene {
         this.inmune = false;
     }
 
-    preload() {}
+    preload() {
+        this.load.image("hojaPersonajes", "/Sprite.png");
+    }
 
     create() {
+        const texturaOriginal = this.textures.get("hojaPersonajes");
+        const anchoImagen = texturaOriginal.getSourceImage().width;
+        const altoImagen = texturaOriginal.getSourceImage().height;
+
+        const tamañoFrameX = anchoImagen / 4;
+        const tamañoFrameY = altoImagen / 4;
+
+        this.textures.addSpriteSheet("personajes", texturaOriginal.getSourceImage(), {
+            frameWidth: tamañoFrameX,
+            frameHeight: tamañoFrameY
+        });
+
         const anchoMapa = this.COLUMNAS * this.TAMANO;
         const altoMapa = this.FILAS * this.TAMANO;
         
@@ -48,8 +62,10 @@ export default class EscenaJuego extends Phaser.Scene {
             }
         }
 
-        this.raton = new Raton(this, 0, 0, null, this.TAMANO);
+        this.raton = new Raton(this, 0, 0, "personajes", this.TAMANO);
+        this.raton.setFrame(8);
         this.raton.setOrigin(0.5);
+        this.raton.setDisplaySize(this.TAMANO - 10, this.TAMANO - 10);
         this.raton.sincronizarPosicion = () => {
             this.raton.x = this.offsetX + this.raton.columna * this.TAMANO;
             this.raton.y = this.offsetY + this.raton.fila * this.TAMANO;
@@ -72,8 +88,10 @@ export default class EscenaJuego extends Phaser.Scene {
         };
         this.pintarCasilla(0, 0);
 
-        const gatoBase = new Gato(this, this.FILAS - 1, this.COLUMNAS - 1, null, this.TAMANO, false);
+        const gatoBase = new Gato(this, this.FILAS - 1, this.COLUMNAS - 1, "personajes", this.TAMANO, false);
+        gatoBase.setFrame(0);
         gatoBase.setOrigin(0.5);
+        gatoBase.setDisplaySize(this.TAMANO - 10, this.TAMANO - 10);
         gatoBase.sincronizarPosicion = () => {
             gatoBase.x = this.offsetX + gatoBase.columna * this.TAMANO;
             gatoBase.y = this.offsetY + gatoBase.fila * this.TAMANO;
@@ -104,9 +122,11 @@ export default class EscenaJuego extends Phaser.Scene {
         if (this.estaPausado || this.juegoTerminado) return;
         const esquinas = [{ r: 0, c: this.COLUMNAS - 1 }, { r: this.FILAS - 1, c: 0 }, { r: this.FILAS - 1, c: this.COLUMNAS - 1 }];
         const esquinaElegida = esquinas[Phaser.Math.Between(0, esquinas.length - 1)];
-        const gatoTemporal = new Gato(this, esquinaElegida.r, esquinaElegida.c, null, this.TAMANO, true);
+        const gatoTemporal = new Gato(this, esquinaElegida.r, esquinaElegida.c, "personajes", this.TAMANO, true);
+        gatoTemporal.setFrame(2);
         gatoTemporal.estaDespierto = true;
         gatoTemporal.setOrigin(0.5);
+        gatoTemporal.setDisplaySize(this.TAMANO - 10, this.TAMANO - 10);
         gatoTemporal.sincronizarPosicion = () => {
             gatoTemporal.x = this.offsetX + gatoTemporal.columna * this.TAMANO;
             gatoTemporal.y = this.offsetY + gatoTemporal.fila * this.TAMANO;
