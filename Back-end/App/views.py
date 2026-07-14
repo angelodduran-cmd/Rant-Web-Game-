@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from .models import User, Scores
-from .serializers import UserSerializer, ScoreSerializer
+from .serializers import *
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -11,4 +12,7 @@ class ScoreViewSet(viewsets.ModelViewSet):
     serializer_class = ScoreSerializer
     def get_queryset(self):
         return Scores.objects.all().order_by('-score')[:10]
+    
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class=CustomTokenObtainPairSerializer
 

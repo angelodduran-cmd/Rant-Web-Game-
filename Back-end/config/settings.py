@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-e#*c-l&d7nwi1fzsl#zsikfo_)o70+nwwdi6wk*5g$rgqr88e^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["desktop-ddvmb9e.gourami-cosmological.ts.net"]
 
 
 # Application definition
@@ -126,7 +126,7 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 MEDIA_URL='/media/'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "http://localhost:5173","https://desktop-ddvmb9e.gourami-cosmological.ts.net"
 
     
 ]

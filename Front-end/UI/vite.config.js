@@ -9,4 +9,7 @@ export default defineConfig({
     react(), tailwindcss(),
     babel({ presets: [reactCompilerPreset()] })
   ],
+   server:{
+    allowedHosts:['desktop-ddvmb9e.gourami-cosmological.ts.net']
+  }
 })

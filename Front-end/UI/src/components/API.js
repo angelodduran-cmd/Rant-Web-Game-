@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-const url="http://localhost:8000"
+export const url="https://desktop-ddvmb9e.gourami-cosmological.ts.net:8443"
 const Login=axios.create({baseURL:`${url}/api/Login`})
 const Users=axios.create({baseURL:`${url}/api/Data/User`})
 const Scores=axios.create({baseURL:`${url}/api/Data/Score`})
@@ -22,3 +22,4 @@ const adjuntarToken=(instancia)=>{
 
 export const DoLogin=(datos)=>Login.post("",datos)
 export const CreateUser=(datos)=>Users.post("/",datos)
+export const GetScore=()=>Scores.get("/")
