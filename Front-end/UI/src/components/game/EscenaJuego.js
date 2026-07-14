@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import Raton from "./Raton";
 
 export default class EscenaJuego extends Phaser.Scene {
     constructor() {
@@ -13,7 +14,6 @@ export default class EscenaJuego extends Phaser.Scene {
     }
 
     preload() {
-        
     }
 
     create() {
@@ -32,9 +32,34 @@ export default class EscenaJuego extends Phaser.Scene {
                 this.grupoCuadrícula.add(rectangulo);
             }
         }
+
+        this.raton = new Raton(this, 0, 0, null, this.TAMANO);
+        this.raton.setOrigin(0.5);
+
+        this.teclado = this.input.keyboard.createCursorKeys();
+
+        this.pintarCasilla = (r, c) => {
+            this.matrizTablero[r][c] = 1;
+            this.grupoCuadrícula.children.iterate(rect => {
+                const coords = rect.getData('coordenadas');
+                if (coords.r === r && coords.c === c) {
+                    rect.setFillStyle(0x00aaff); 
+                }
+            });
+        };
+
+        this.pintarCasilla(0, 0);
     }
 
     update() {
-        
+        if (Phaser.Input.Keyboard.JustDown(this.teclado.up)) {
+            this.raton.moverA(this.raton.fila - 1, this.raton.columna, this.FILAS, this.COLUMNAS);
+        } else if (Phaser.Input.Keyboard.JustDown(this.teclado.down)) {
+            this.raton.moverA(this.raton.fila + 1, this.raton.columna, this.FILAS, this.COLUMNAS);
+        } else if (Phaser.Input.Keyboard.JustDown(this.teclado.left)) {
+            this.raton.moverA(this.raton.fila, this.raton.columna - 1, this.FILAS, this.COLUMNAS);
+        } else if (Phaser.Input.Keyboard.JustDown(this.teclado.right)) {
+            this.raton.moverA(this.raton.fila, this.raton.columna + 1, this.FILAS, this.COLUMNAS);
+        }
     }
 }
