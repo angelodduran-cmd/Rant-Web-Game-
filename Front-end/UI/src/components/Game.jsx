@@ -62,7 +62,7 @@ const Game = ({ onGameOver }) => {
     <div className="w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto px-4">
       <div
         ref={gameContainerRef}
-        className="w-full h-87.5 sm:h-112.5 md:h-125 lg:h-137.5 rounded-2xl overflow-hidden border-4 border-amber-900 shadow-2xl bg-stone-950 transition-all duration-300"
+        className="w-full h-87.5 sm:h-112.5 md:h-125 lg:h-137.5 rounded-2xl overflow-hidden border-4 border-amber-900 shadow-lg shadow-amber-600 bg-stone-950 transition-all duration-300"
       />
     </div>
   );

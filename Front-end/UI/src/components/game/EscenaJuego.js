@@ -21,23 +21,58 @@ export default class EscenaJuego extends Phaser.Scene {
         this.vidas = 3;
         this.juegoTerminado = false;
         this.inmune = false;
+        this.tiempoTranscurrido = 0;
     }
 
     preload() {
         this.load.image("hojaPersonajes", "/Sprite.png");
+        this.load.image("fondoJuego", "/background.png");
+        this.load.image("hojaCasillas", "/Casillas.png");
     }
 
     create() {
+        let fondo = this.add.image(0, 0, "fondoJuego");
+        fondo.setOrigin(0);
+        fondo.setDisplaySize(this.cameras.main.width, this.cameras.main.height);
+
+        this.textoPuntos = this.add.text(25, 20, "PUNTOS: 0", {
+            fontFamily: "Arial Black",
+            fontSize: "20px",
+            fill: "#fbbf24"
+        });
+
+        this.textoTiempo = this.add.text(this.cameras.main.width - 175, 20, "TIEMPO: 0s", {
+            fontFamily: "Arial Black",
+            fontSize: "20px",
+            fill: "#fef3c7"
+        });
+
+        this.temporizadorSegundos = this.time.addEvent({
+            delay: 1000,
+            callback: () => {
+                if (!this.estaPausado && !this.juegoTerminado) {
+                    this.tiempoTranscurrido++;
+                    this.textoTiempo.setText(`TIEMPO: ${this.tiempoTranscurrido}s`);
+                }
+            },
+            callbackScope: this,
+            loop: true
+        });
+
+        const texturaCasillas = this.textures.get("hojaCasillas");
+        const anchoCasillas = texturaCasillas.getSourceImage().width;
+        const altoCasillas = texturaCasillas.getSourceImage().height;
+        this.textures.addSpriteSheet("texturaCasillas", texturaCasillas.getSourceImage(), {
+            frameWidth: anchoCasillas / 2,
+            frameHeight: altoCasillas
+        });
+
         const texturaOriginal = this.textures.get("hojaPersonajes");
         const anchoImagen = texturaOriginal.getSourceImage().width;
         const altoImagen = texturaOriginal.getSourceImage().height;
-
-        const tamañoFrameX = anchoImagen / 4;
-        const tamañoFrameY = altoImagen / 4;
-
         this.textures.addSpriteSheet("personajes", texturaOriginal.getSourceImage(), {
-            frameWidth: tamañoFrameX,
-            frameHeight: tamañoFrameY
+            frameWidth: anchoImagen / 4,
+            frameHeight: altoImagen / 4
         });
 
         const anchoMapa = this.COLUMNAS * this.TAMANO;
@@ -49,16 +84,16 @@ export default class EscenaJuego extends Phaser.Scene {
         this.grupoCuadrícula = this.add.group();
         for (let r = 0; r < this.FILAS; r++) {
             for (let c = 0; c < this.COLUMNAS; c++) {
-                let rectangulo = this.add.rectangle(
+                let casillaSprite = this.add.sprite(
                     this.offsetX + (c * this.TAMANO) - this.TAMANO / 2, 
                     this.offsetY + (r * this.TAMANO) - this.TAMANO / 2, 
-                    this.TAMANO - 5, 
-                    this.TAMANO - 5, 
-                    0x4a4a4a
+                    "texturaCasillas"
                 );
-                rectangulo.setOrigin(0);
-                rectangulo.setData('coordenadas', { r, c });
-                this.grupoCuadrícula.add(rectangulo);
+                casillaSprite.setOrigin(0);
+                casillaSprite.setFrame(0);
+                casillaSprite.setDisplaySize(this.TAMANO - 2, this.TAMANO - 2);
+                casillaSprite.setData('coordenadas', { r, c });
+                this.grupoCuadrícula.add(casillaSprite);
             }
         }
 
@@ -79,9 +114,11 @@ export default class EscenaJuego extends Phaser.Scene {
                 this.matrizTablero[r][c] = 1;
                 this.casillasPintadasContador++;
                 this.puntuacionActual += 10;
-                this.grupoCuadrícula.getChildren().forEach(rect => {
-                    const coords = rect.getData('coordenadas');
-                    if (coords.r === r && coords.c === c) rect.setFillStyle(0x00aaff);
+                this.textoPuntos.setText(`PUNTOS: ${this.puntuacionActual}`);
+                
+                this.grupoCuadrícula.getChildren().forEach(casilla => {
+                    const coords = casilla.getData('coordenadas');
+                    if (coords.r === r && coords.c === c) casilla.setFrame(1);
                 });
                 if (this.casillasPintadasContador === this.totalCasillasAPintar) this.reiniciarTableroInfinito();
             }
@@ -110,7 +147,17 @@ export default class EscenaJuego extends Phaser.Scene {
             delay: this.velocidadCicloGatos,
             callback: () => {
                 if (!this.estaPausado && !this.juegoTerminado) {
-                    this.listaGatos.forEach(gato => gato.actualizarLogica(this.FILAS, this.COLUMNAS, this.raton.fila, this.raton.columna));
+                    this.listaGatos.forEach(gato => {
+                        const filaPrevia = gato.fila;
+                        const colPrevia = gato.columna;
+                        gato.actualizarLogica(this.FILAS, this.COLUMNAS, this.raton.fila, this.raton.columna);
+                        const frameBase = gato.esCazador ? 2 : 0;
+                        const frameOffsetLateral = gato.esCazador ? 2 : 4;
+                        if (gato.fila > filaPrevia) gato.setFrame(frameBase);
+                        else if (gato.fila < filaPrevia) gato.setFrame(frameBase + 1);
+                        else if (gato.columna > colPrevia) gato.setFrame(frameOffsetLateral);
+                        else if (gato.columna < colPrevia) gato.setFrame(frameOffsetLateral + 1);
+                    });
                 }
             },
             callbackScope: this,
@@ -147,7 +194,7 @@ export default class EscenaJuego extends Phaser.Scene {
         }
         this.matrizTablero = Array.from({ length: this.FILAS }, () => Array(this.COLUMNAS).fill(0));
         this.casillasPintadasContador = 0;
-        this.grupoCuadrícula.getChildren().forEach(rect => rect.setFillStyle(0x4a4a4a));
+        this.grupoCuadrícula.getChildren().forEach(casilla => casilla.setFrame(0));
         this.pintarCasilla(this.raton.fila, this.raton.columna);
         this.cameras.main.flash(500, 252, 211, 77);
     }
@@ -161,6 +208,7 @@ export default class EscenaJuego extends Phaser.Scene {
             this.raton.setVisible(false);
             this.time.delayedCall(1000, () => {
                 this.raton.moverA(0, 0, this.FILAS, this.COLUMNAS);
+                this.raton.setFrame(8);
                 this.raton.setVisible(true);
                 this.inmune = false;
             });
@@ -172,12 +220,13 @@ export default class EscenaJuego extends Phaser.Scene {
 
     update() {
         if (this.juegoTerminado || this.estaPausado) return;
-        if (Phaser.Input.Keyboard.JustDown(this.teclado.up)) this.raton.moverA(this.raton.fila - 1, this.raton.columna, this.FILAS, this.COLUMNAS);
-        else if (Phaser.Input.Keyboard.JustDown(this.teclado.down)) this.raton.moverA(this.raton.fila + 1, this.raton.columna, this.FILAS, this.COLUMNAS);
-        else if (Phaser.Input.Keyboard.JustDown(this.teclado.left)) this.raton.moverA(this.raton.fila, this.raton.columna - 1, this.FILAS, this.COLUMNAS);
-        else if (Phaser.Input.Keyboard.JustDown(this.teclado.right)) this.raton.moverA(this.raton.fila, this.raton.columna + 1, this.FILAS, this.COLUMNAS);
-        this.listaGatos.forEach(gato => {
-            if (this.raton.fila === gato.fila && this.raton.columna === gato.columna) this.manejarColision();
-        });
-    }
-}
+        if (Phaser.Input.Keyboard.JustDown(this.teclado.up)) {
+            this.raton.moverA(this.raton.fila - 1, this.raton.columna, this.FILAS, this.COLUMNAS);
+            this.raton.setFrame(9);
+        } else if (Phaser.Input.Keyboard.JustDown(this.teclado.down)) {
+            this.raton.moverA(this.raton.fila + 1, this.raton.columna, this.FILAS, this.COLUMNAS);
+            this.raton.setFrame(8);
+        } else if (Phaser.Input.Keyboard.JustDown(this.teclado.left)) {
+            this.raton.moverA(this.raton.fila, this.raton.columna - 1, this.FILAS, this.COLUMNAS);
+            this.raton.setFrame(13);
+} else if (Phaser.Input.Keyboard.JustDown(this.teclado.right)) {this.raton.moverA(this.raton.fila, this.raton.columna + 1, this.FILAS, this.COLUMNAS);this.raton.setFrame(12);}this.listaGatos.forEach(gato => {if (this.raton.fila === gato.fila && this.raton.columna === gato.columna) this.manejarColision();});}}
