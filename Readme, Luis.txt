@@ -14,3 +14,5 @@ Digo esto, no como una crítica, si no más bien como un opinió personal comple
 Creo que al final, esto no es más que un mensaje egoísta redactado como un Easter egg del proyecto :v
 
 Si nos veremos o no el semestre que viene, eso lo veremos después XD. Un saludo!
+
+PD: El proyecto inicia en localhost:5173/Login. Si lo abres sin el endpoint / va a estar en blanco
