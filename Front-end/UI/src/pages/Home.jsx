@@ -7,14 +7,17 @@ import { url } from "../components/API";
 import Contact from "../components/Contact";
 import { AnimatePresence } from "motion/react";
 import Modal from "../components/Modal";
-
+import how from "/how_to_play.png";
 import { useNavigate } from "react-router-dom";
+
+//Qué hay, Luis? :v
 
 const Home = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [user, setUser] = useState("Player");
   const [foto, setFoto] = useState("");
   const [contacto, setContacto] = useState(false);
+  const [play, setPlay] = useState(false);
 
   const navi = useNavigate();
 
@@ -90,6 +93,13 @@ const Home = () => {
           >
             <button
               className="text-sm font-semibold tracking-wide text-amber-200/80 hover:text-amber-300 transition duration-200 px-4 py-2 rounded-full border border-amber-700/60 bg-amber-950/50 hover:bg-amber-900/40 active:scale-95"
+              onClick={() => setPlay(true)}
+            >
+              Cómo jugar
+            </button>
+
+            <button
+              className="text-sm font-semibold tracking-wide text-amber-200/80 hover:text-amber-300 transition duration-200 px-4 py-2 rounded-full border border-amber-700/60 bg-amber-950/50 hover:bg-amber-900/40 active:scale-95"
               onClick={() => setContacto(true)}
             >
               Contact
@@ -128,7 +138,7 @@ const Home = () => {
           >
             <div
               id="Champions list"
-              className="flex flex-col gap-5 bg-stone-900/40 border-2 border-amber-900/40 p-6 rounded-2xl shadow-2xl backdrop-blur-sm h-100"
+              className="flex flex-col gap-5 bg-stone-900/40 border-2 border-amber-900/40 p-6 rounded-2xl  backdrop-blur-sm h-100 shadow-lg shadow-amber-500"
             >
               <h2 className="text-2xl font-extrabold text-amber-300 border-b border-amber-900/40 pb-3 flex items-center gap-2">
                 🏆 Clasificaciones Top 10
@@ -167,12 +177,12 @@ const Home = () => {
 
             <div
               id="Resena historica Qbert"
-              className="flex flex-col gap-5 bg-stone-900/40 border-2 border-amber-900/40 p-6 rounded-2xl shadow-2xl backdrop-blur-sm h-100"
+              className="flex flex-col gap-5 bg-stone-900/40 border-2 border-amber-900/40 p-6 rounded-2x  backdrop-blur-sm h-100 shadow-lg shadow-amber-500"
             >
               <h2 className="text-2xl font-extrabold text-amber-300 border-b border-amber-900/40 pb-3 flex items-center gap-2">
                 🕹️ Antecedentes: Q*bert
               </h2>
-              <div className="overflow-y-auto flex-1 pr-2 custom-scrollbar text-amber-100/70 text-sm leading-relaxed text-justify space-y-4">
+              <div className="overflow-y-auto flex-1 pr-2 custom-scrollbar text-amber-100/70 text-sm leading-relaxed text-justify space-y-4 ">
                 <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
                   <img
                     src={Qbert}
@@ -213,6 +223,17 @@ const Home = () => {
         {contacto && (
           <Modal isOpen={contacto} onClose={() => setContacto(false)}>
             <Contact onClose={() => setContacto(false)} />
+          </Modal>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {play && (
+          <Modal isOpen={play} onClose={() => setPlay(false)}>
+            <img
+              src={how}
+              alt="how-to-play"
+              className="h-150 w-auto  rounded-2xl border border-amber-500 shadow-lg shadow-amber-500"
+            />
           </Modal>
         )}
       </AnimatePresence>

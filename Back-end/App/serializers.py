@@ -4,6 +4,9 @@ from django.contrib.auth.password_validation import validate_password as django_
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
+#Hola, Luis 
+
+
 class UserSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False, allow_null=True)
     

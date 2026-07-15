@@ -13,7 +13,7 @@ const Contact = () => {
             Desarrolladores
           </span>
           <p className="text-xl font-extrabold text-amber-200 tracking-wide hover:text-amber-300 transition duration-150">
-            Roxana Edén León
+            Roxana León
           </p>
           <p className="text-xl font-extrabold text-amber-200 tracking-wide hover:text-amber-300 transition duration-150">
             Angelo Durán

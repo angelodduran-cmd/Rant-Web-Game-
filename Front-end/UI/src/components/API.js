@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-export const url="https://desktop-ddvmb9e.gourami-cosmological.ts.net:8443"
+//En efecto utilicé Axios porque me da flojera codificar los métodos HTTP  . . .
+
+export const url="http://localhost:8000"
 const Login=axios.create({baseURL:`${url}/api/Login`})
 const Users=axios.create({baseURL:`${url}/api/Data/User`})
 const Scores=axios.create({baseURL:`${url}/api/Data/Score`})

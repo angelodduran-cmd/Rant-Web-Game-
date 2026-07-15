@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Logo from "/Logo.png";
-import BG from "/Login_Background.png";
+import BG from "/portada.png";
 import { AnimatePresence } from "motion/react";
 import Modal from "../components/Modal";
 import Register from "../components/Register";
@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { DoLogin } from "../components/API";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+
+//Hola, Luis :v
 
 const Login = () => {
   const [registro, setRegistro] = useState(false);

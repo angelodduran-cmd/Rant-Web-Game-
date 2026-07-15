@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-e#*c-l&d7nwi1fzsl#zsikfo_)o70+nwwdi6wk*5g$rgqr88e^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["desktop-ddvmb9e.gourami-cosmological.ts.net"]
+#Ese link raro es de Tailscale funnel, programa que utilice para establecer una red virtual y que los demás lo probaran desde su casa :v
+ALLOWED_HOSTS = ["desktop-ddvmb9e.gourami-cosmological.ts.net","localhost"]
 
 
 # Application definition
@@ -125,6 +126,7 @@ import os
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 MEDIA_URL='/media/'
 
+#Ese link raro es de Tailscale funnel, programa que utilice para establecer una red virtual y que los demás lo probaran desde su casa :v
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173","https://desktop-ddvmb9e.gourami-cosmological.ts.net"
 

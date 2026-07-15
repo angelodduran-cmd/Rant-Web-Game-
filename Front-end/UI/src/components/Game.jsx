@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import Phaser from "phaser";
 import EscenaInicio from "./game/EscenaInicio";
 import EscenaJuego from "./game/EscenaJuego";
+// 🔴 Importamos la nueva escena
+import EscenaGameOver from "./game/EscenaGameOver";
 
 const Game = ({ onGameOver }) => {
   const gameContainerRef = useRef(null);
@@ -26,8 +28,8 @@ const Game = ({ onGameOver }) => {
         canvasStyle:
           "position: relative; width: 100%; height: 100%; display: block;",
       },
-
-      scene: [EscenaInicio, EscenaJuego],
+      // 🔴 CAMBIADO: Añadimos EscenaGameOver al final de la lista de escenas operativas
+      scene: [EscenaInicio, EscenaJuego, EscenaGameOver],
     };
 
     const juegoInstancia = new Phaser.Game(config);
@@ -62,7 +64,7 @@ const Game = ({ onGameOver }) => {
     <div className="w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto px-4">
       <div
         ref={gameContainerRef}
-        className="w-full h-87.5 sm:h-112.5 md:h-125 lg:h-137.5 rounded-2xl overflow-hidden border-4 border-amber-900 shadow-lg shadow-amber-600 bg-stone-950 transition-all duration-300"
+        className="w-full h-87.5 sm:h-112.5 md:h-125 lg:h-137.5 rounded-2xl overflow-hidden border-4 border-amber-900 shadow-lg shadow-amber-500 bg-stone-950 transition-all duration-300"
       />
     </div>
   );

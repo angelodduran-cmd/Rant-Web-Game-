@@ -188,7 +188,7 @@ export default class EscenaJuego extends Phaser.Scene {
     }
 
     reiniciarTableroInfinito() {
-        if (this.velocidadCicloGatos > 300) {
+        if (this.velocicleGatos > 300) {
             this.velocidadCicloGatos -= 70;
             this.actualizarTemporizadorGatos();
         }
@@ -215,6 +215,9 @@ export default class EscenaJuego extends Phaser.Scene {
         } else {
             this.juegoTerminado = true;
             this.game.events.emit("GAME_OVER_EVENT", this.puntuacionActual);
+            this.time.delayedCall(1000, () => {
+                this.scene.start("EscenaGameOver", { puntos: this.puntuacionActual });
+            });
         }
     }
 
@@ -226,7 +229,4 @@ export default class EscenaJuego extends Phaser.Scene {
         } else if (Phaser.Input.Keyboard.JustDown(this.teclado.down)) {
             this.raton.moverA(this.raton.fila + 1, this.raton.columna, this.FILAS, this.COLUMNAS);
             this.raton.setFrame(8);
-        } else if (Phaser.Input.Keyboard.JustDown(this.teclado.left)) {
-            this.raton.moverA(this.raton.fila, this.raton.columna - 1, this.FILAS, this.COLUMNAS);
-            this.raton.setFrame(13);
-} else if (Phaser.Input.Keyboard.JustDown(this.teclado.right)) {this.raton.moverA(this.raton.fila, this.raton.columna + 1, this.FILAS, this.COLUMNAS);this.raton.setFrame(12);}this.listaGatos.forEach(gato => {if (this.raton.fila === gato.fila && this.raton.columna === gato.columna) this.manejarColision();});}}
+} else if (Phaser.Input.Keyboard.JustDown(this.teclado.left)) {this.raton.moverA(this.raton.fila, this.raton.columna - 1, this.FILAS, this.COLUMNAS);this.raton.setFrame(13);} else if (Phaser.Input.Keyboard.JustDown(this.teclado.right)) {this.raton.moverA(this.raton.fila, this.raton.columna + 1, this.FILAS, this.COLUMNAS);this.raton.setFrame(12);}this.listaGatos.forEach(gato => {if (this.raton.fila === gato.fila && this.raton.columna === gato.columna) this.manejarColision();});}}
