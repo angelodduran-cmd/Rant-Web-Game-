@@ -1,18 +1,43 @@
-Hola, profesor. Aquí Angelo, el supuesto "Pana que sabe" XD
-Este archivo no tiene mucho que ver con la evaluación, pero aún así tuve la osadía de escribirlo, ni tampoco pretendo disoadirte de nigunga forma :v (No es una funa XD)
-Fue un semestre bastante curioso, tras todo lo que pasó, y aún así, me hubiera gustado terminarlo de forma regular
-Reconozco que sabes muchisimo sobre el campo, de todos los profesores, considero que eres uno de los que más conocen su materia
-Pero, aún con todo y eso, en mi opinión personal, quizás las clases pudieron haber sido un tanto diferentes
-Comprendo que actuen bajo pedagogía andragójica, y quieran insentivarnos a investigar de forma semi-autodidacta, lo cual, es totalmente válido
-cuando al fin comprendes que eres tú el que debe preocuparse por tu desarrollo profesional, pero, aún así pienso que las clases pudieron haber sido más completas
-Si se hubiesen discutido más a fondo, de una forma más teórica, algunos conceptos en el salón, estoy seguro que muchas dudas que pudieran tener mis compañeros
-acerca de la materia o el paradigma estudiado no existirían. En definitiva, pienso que se pudo haber aprovechado de mejor forma el tiempo en clase
+tenias un dependencia local (generaba error)
+aparte me dice Unauthorized (al crear el usuario)
+no configuraste bien el django -_-
 
 
-Digo esto, no como una crítica, si no más bien como un opinió personal completamente sincera. Ya que es muy fácil hablar mal de una persona, sin tomarse el tiempo de manifestarle nada de forma acertiva
+y con respecto a lo otro
+ps a lugar perdimos algunas clases el semestre y mientras se organizaban
+bueh lo de los juegos fue una alternativa 
+porque me parecio una manera sencilla de trabajar la logica de programacion
+(cosa que salio mal)
+En realidad esperaba que se les hiciera un poco mas facil
+cuando estabamos trabajando cosas sencillas
 
-Creo que al final, esto no es más que un mensaje egoísta redactado como un Easter egg del proyecto :v
+a fin de cuentas me fuera gustado ver un poco mas de interes en la clase
+y puede que participacion
+porque segun yo ibamos a seguir trabajando sistemas de informacion
+pero como no supieron responder un ejercicio sencillo de lenguaje I...
+tu me diras
 
-Si nos veremos o no el semestre que viene, eso lo veremos después XD. Un saludo!
+tal vez si fueramos tenido más tiempo para enseñarles a usar las herramientas
+pero caemos en lo mismo las herramientas no tienen nada del otro mundo
+todo era clases
+objetos
+subclases
+y metodos que no contaban con la mayor complicacion
+y de phazer a pygame no hay mucha diferencia
+lo que cambia principalmente son los metodos un poco sin embargo
+si fueran investigado
+podian ver que habian muchaaaaaaaaaaaaaaaaaaas
+cosas que les facilitaban el desarrollo del juego
+no he visto el primero que usara tiled... lo pase por el grupo
 
-PD: El proyecto inicia en localhost:5173/Login. Si lo abres sin el endpoint / va a estar en blanco
+(y en general, creo que esto es más una queja porque me fuera gustado que lo hicieran mejor, me gusta que participen que se integren, que formen parte de la clase)
+
+mucho exito arregla tu situacion para corregirte a medio dia
+
+nota marginal:
+
+si solo tu trabajaste en el git asumo que lo hiciste todo tu la asignacion era
+control de versiones 
+iba a corregir el codigo, pero no lo estoy revisando
+revise dos y bueno, no los raspe
+pero para mi no pasaban

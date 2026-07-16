@@ -1,7 +1,7 @@
 altgraph==0.17.4
 asgiref==3.11.0
 bleak==3.0.2
-Calendario_Perpetuo @ file:///C:/Users/G-FIVE/Desktop/PRUEBA/dist/calendario_perpetuo-1.0.tar.gz#sha256=364be3e5f8a76db368cbfcf6e8fc64a466a5445a5d21705d52154b6932870a9c
+
 distlib==0.4.0
 Django==6.0.7
 django-cors-headers==4.9.0
